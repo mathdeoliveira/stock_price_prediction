@@ -13,4 +13,7 @@ merge_data:
 process_data:
 	python src/data_process/process_data.py
 
-run: download_currency_data download_indices_data download_stocks_data merge_data process_data
+train:
+	cd src/training_model && python train_model.py
+
+run: download_currency_data download_indices_data download_stocks_data merge_data process_data train

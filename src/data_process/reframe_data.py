@@ -111,8 +111,8 @@ class DataReframing:
         X = dataset.loc[:, X.columns]
 
         # Salvar o DataFrame reenquadrado em um arquivo CSV no diretório 'data/interim'
-        
+
         file_name = os.path.join(self.data_interim_path, "reframed_data.csv")
         dataset.to_csv(file_name)
-        
+
         return dataset, X, Y

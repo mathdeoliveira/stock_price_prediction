@@ -16,13 +16,14 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "../../config"))
 
 import sqlite3
+
 import pandas as pd
 import yfinance as yf
 
 yf.pdr_override()
 from pandas_datareader import data as pdr
 
-from config import end_date, start_date, collected_data_db, tickers
+from config import collected_data_db, end_date, start_date, tickers
 
 
 def download_stock_data():
@@ -38,22 +39,26 @@ def download_stock_data():
         Salva os dados de ações em um arquivo CSV.
     """
     # Conectar-se ao banco de dados SQLite
-    
+
     conn = sqlite3.connect(collected_data_db)
     cursor = conn.cursor()
-    
+
     # Criar uma tabela para armazenar os dados das moedas
-    cursor.execute('''CREATE TABLE IF NOT EXISTS stocks_data (
+    cursor.execute(
+        """CREATE TABLE IF NOT EXISTS stocks_data (
                       Date TEXT,
                       JPM REAL,
                       BAC REAL,
-                      WFC REAL)''')
+                      WFC REAL)"""
+    )
 
     portfolio = pd.DataFrame()
     for t in tickers:
         portfolio[t] = pdr.get_data_yahoo(t, start_date, end_date)["Adj Close"]
 
-    portfolio.reset_index().to_sql('stocks_data', conn, if_exists='replace',index=False)
+    portfolio.reset_index().to_sql(
+        "stocks_data", conn, if_exists="replace", index=False
+    )
 
 
 if __name__ == "__main__":
