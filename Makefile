@@ -16,4 +16,10 @@ process_data:
 train:
 	cd src/training_model && python train_model.py
 
-run: download_currency_data download_indices_data download_stocks_data merge_data process_data train
+predict:
+	cd src/training_model && python predict.py
+
+app:
+	cd src/app && streamlit run app.py
+
+run: download_currency_data download_indices_data download_stocks_data merge_data process_data train predict app
